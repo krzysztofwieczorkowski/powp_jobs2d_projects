@@ -2,13 +2,15 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
-public class RotationDriverDecorator implements Job2dDriver {
+public class TransformerDriverDecorator implements Job2dDriver {
     private Job2dDriver driver;
-    private double angle;
+    private double scaleX;
+    private double scaleY;
 
-    public RotationDriverDecorator(Job2dDriver driver, double angleDegree) {
+    public TransformerDriverDecorator(Job2dDriver driver, double scaleX, double scaleY) {
         this.driver = driver;
-        this.angle = Math.toRadians(angleDegree);
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
     }
 
     @Override
@@ -24,13 +26,13 @@ public class RotationDriverDecorator implements Job2dDriver {
     }
 
     private int[] calculateCoordinates(int x, int y) {
-        int newX = (int) (x * Math.cos(angle) - y * Math.sin(angle));
-        int newY = (int) (x * Math.sin(angle) + y * Math.cos(angle));
+        int newX = (int) (x * scaleX);
+        int newY = (int) (int) (y * scaleY);
         return new int[]{newX, newY};
     }
 
     @Override
     public String toString() {
-        return "Rotate: " + driver.toString();
+        return "Transform: " + driver.toString();
     }
 }
