@@ -14,4 +14,6 @@ public interface DriverCommand {
      */
     public void execute(Job2dDriver driver);
 
+    DriverCommand copy();
+
 }
