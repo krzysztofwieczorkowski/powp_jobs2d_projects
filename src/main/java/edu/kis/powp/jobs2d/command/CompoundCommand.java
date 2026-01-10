@@ -48,6 +48,14 @@ public class CompoundCommand implements ICompoundCommand {
         return commands.iterator();
     }
 
+    @Override
+    public CompoundCommand copy() {
+        List<DriverCommand> copied = new ArrayList<>();
+        for (DriverCommand command : commands) {
+            copied.add(command.copy());
+        }
+        return new CompoundCommand(copied);
+    }
 
     /**
      * Factory method to create a CompoundCommand from a list of commands.
@@ -162,4 +170,5 @@ public class CompoundCommand implements ICompoundCommand {
     public static Builder builder() {
         return new Builder();
     }
+
 }
