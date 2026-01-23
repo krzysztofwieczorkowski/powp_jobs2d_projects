@@ -22,23 +22,25 @@ public class CommandTransformerVisitor implements CommandVisitor {
         return transformedCommand;
     }
 
-    @Override
-    public void visit(SetPositionCommand cmd) {
+    private TransformCords transformCords(DriverCommand cmd) {
         CapturingDriver driver = new CapturingDriver(strategy);
         cmd.execute(driver);
+        return driver.getTransformedCoords();
+    }
+
+    @Override
+    public void visit(SetPositionCommand cmd) {
+        TransformCords cords = transformCords(cmd);
         transformedCommand = new SetPositionCommand(
-                driver.getTransformedCoords().x,
-                driver.getTransformedCoords().y
+                cords.x, cords.y
         );
     }
 
     @Override
     public void visit(OperateToCommand cmd) {
-        CapturingDriver driver = new CapturingDriver(strategy);
-        cmd.execute(driver);
+        TransformCords cords = transformCords(cmd);
         transformedCommand = new OperateToCommand(
-                driver.getTransformedCoords().x,
-                driver.getTransformedCoords().y
+                cords.x, cords.y
         );
     }
 
@@ -60,6 +62,7 @@ public class CommandTransformerVisitor implements CommandVisitor {
 
         private final TransformStrategy strategy;
         private TransformCords transformedCoords;
+
 
         public CapturingDriver(TransformStrategy strategy) {
             this.strategy = strategy;
